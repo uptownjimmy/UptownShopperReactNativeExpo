@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { ActionSheetIOS, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Button, CheckBox, Icon, Input } from 'react-native-elements';
-import axios from 'axios';
 
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/dev',
-  // timeout: 1000,
-  // headers: { 'X-Custom-Header': 'foobar' },
-});
+import { createItem } from '../../slices/items';
 
 const types = ['cancel', 'grocery', 'hardware', 'clothing', 'other'];
 
 export function ItemModal({ navigation }) {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [note, setNote] = useState('');
   const [type, setType] = useState('grocery');
@@ -30,21 +28,23 @@ export function ItemModal({ navigation }) {
     );
   };
 
-  const createItem = () => {
-    axiosInstance
-      .post('/items', {
-        name: name,
-        note: note,
-        type: type,
-        active: active,
-      })
-      .then(function (response) {
-        console.log(response);
-        navigation.goBack();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  const createNewItem = async () => {
+      await dispatch(createItem(name, note, type, active));
+      navigation.goBack();
+    // axiosInstance
+    //   .post('/items', {
+    //     name: name,
+    //     note: note,
+    //     type: type,
+    //     active: active,
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //     navigation.goBack();
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
 
   return (
@@ -96,7 +96,7 @@ export function ItemModal({ navigation }) {
           marginHorizontal: 40,
         }}
         onPress={() => {
-          createItem();
+          createNewItem();
         }}
         title='Finish'
         disabled={name.length < 3}
