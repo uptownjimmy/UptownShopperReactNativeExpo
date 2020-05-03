@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ActionSheetIOS, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Button, CheckBox, Icon, Input } from 'react-native-elements';
 
@@ -8,7 +8,7 @@ import { createItem } from '../../slices/items';
 
 const types = ['cancel', 'grocery', 'hardware', 'clothing', 'other'];
 
-export function ItemModal({ navigation }) {
+export function ItemModal({ navigation }: {navigation: any}) {
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -29,22 +29,8 @@ export function ItemModal({ navigation }) {
   };
 
   const createNewItem = async () => {
-      await dispatch(createItem(name, note, type, active));
-      navigation.goBack();
-    // axiosInstance
-    //   .post('/items', {
-    //     name: name,
-    //     note: note,
-    //     type: type,
-    //     active: active,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //     navigation.goBack();
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+    await dispatch(createItem(name, note, type, active));
+    navigation.goBack();
   };
 
   return (

@@ -1,29 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
-import axios from 'axios';
 
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000/dev',
-  // timeout: 1000,
-  // headers: { 'X-Custom-Header': 'foobar' },
-});
+import { removeItem } from '../../slices/items';
+import { Item } from '../../interfaces';
 
-export function PantryItem({ item, navigation }) {
-  const deleteItem = () => {
-    console.log('James item.id: ', item.id);
-    axiosInstance
-      .delete(`/items/${item.id}`, {
-        data: null,
-      })
-      .then(function (response) {
-        console.log(response);
-        navigation.goBack();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+export function PantryItem({
+  item,
+  navigation,
+}: {
+  item: Item;
+  navigation: any;
+}) {
+  const dispatch = useDispatch();
+
+  const deleteItem = async () => {
+    await dispatch(removeItem(item.id));
   };
 
   const confirmDelete = () =>

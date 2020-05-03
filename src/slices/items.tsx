@@ -1,5 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, Dispatch } from '@reduxjs/toolkit';
 import axios from 'axios';
+
+import { Item } from '../interfaces';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:3000/dev',
@@ -10,7 +12,7 @@ const axiosInstance = axios.create({
 export const initialState = {
   loading: false,
   hasErrors: false,
-  items: [],
+  items: [] as Item[],
 };
 
 // A slice for items with our three reducers
@@ -34,7 +36,7 @@ const itemsSlice = createSlice({
       state.loading = true;
     },
     addItemSuccess: (state, { payload }) => {
-      state.items = [...state.items , payload];
+      state.items = [...state.items, payload];
       state.loading = false;
       state.hasErrors = false;
     },
@@ -42,10 +44,22 @@ const itemsSlice = createSlice({
       state.loading = false;
       state.hasErrors = true;
     },
+    deleteItem: (state) => {
+      state.loading = true;
+    },
+    deleteItemSuccess: (state, { payload }) => {
+      state.items = state.items.filter((item) => item.id !== payload);
+      state.loading = false;
+      state.hasErrors = false;
+    },
+    deleteItemFailure: (state) => {
+      state.loading = false;
+      state.hasErrors = true;
+    },
   },
 });
 
-// Three actions generated from the slice
+// Actions generated from the slice
 export const {
   getItems,
   getItemsSuccess,
@@ -53,6 +67,9 @@ export const {
   addItem,
   addItemSuccess,
   addItemFailure,
+  deleteItem,
+  deleteItemSuccess,
+  deleteItemFailure,
 } = itemsSlice.actions;
 
 // A selector
@@ -61,15 +78,14 @@ export const itemsSelector = (state: { items: any }) => state.items;
 // The reducer
 export default itemsSlice.reducer;
 
-// Asynchronous thunk action
+// Asynchronous thunk actions
 export function fetchItems() {
-  return async (dispatch) => {
+  return async (dispatch: Dispatch) => {
     dispatch(getItems());
 
     try {
-      const response = await axios('http://localhost:3000/dev/items');
+      const response = await axiosInstance.get('/items');
       const data = await response.data;
-      console.log('%c%s', 'color: #00a3cc', data);
       dispatch(getItemsSuccess(data));
     } catch (error) {
       dispatch(getItemsFailure());
@@ -77,9 +93,15 @@ export function fetchItems() {
   };
 }
 
-export function createItem(name, note, type, active) {
-  return async (dispatch) => {
+export function createItem(
+  name: string,
+  note: string,
+  type: string,
+  active: boolean
+) {
+  return async (dispatch: Dispatch) => {
     dispatch(addItem);
+
     try {
       await axiosInstance
         .post('/items', {
@@ -89,16 +111,33 @@ export function createItem(name, note, type, active) {
           active: active,
         })
         .then(function (response) {
-          console.log(response);
           const id = response.data;
           dispatch(addItemSuccess({ id, name, note, type, active }));
         })
         .catch(function (error) {
-          console.log('axios error: ', error);
+          dispatch(addItemFailure);
         });
     } catch (error) {
-      console.log('%c%s', 'color: #00e600', error);
       dispatch(addItemFailure);
+    }
+  };
+}
+
+export function removeItem(itemId: number) {
+  return async (dispatch: Dispatch) => {
+    try {
+      await axiosInstance
+        .delete(`/items/${itemId}`, {
+          data: null,
+        })
+        .then((response) => {
+          dispatch(deleteItemSuccess(itemId));
+        })
+        .catch((error) => {
+          dispatch(deleteItemFailure);
+        });
+    } catch {
+      dispatch(deleteItemFailure);
     }
   };
 }

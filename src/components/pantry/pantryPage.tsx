@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { PantryItem } from './pantryItem';
 import { fetchItems, itemsSelector } from '../../slices/items';
 
-export function PantryPage({ navigation }) {
+export function PantryPage({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const { items, loading, hasErrors } = useSelector(itemsSelector);
 
@@ -15,8 +15,8 @@ export function PantryPage({ navigation }) {
   }, [dispatch]);
 
   const renderItems = () => {
-    if (loading) return (<Text>Loading items...</Text>);
-    if (hasErrors) return (<Text>Unable to display items.</Text>);
+    if (loading) return <Text>Loading items...</Text>;
+    if (hasErrors) return <Text>Unable to display items.</Text>;
 
     return (
       <FlatList
