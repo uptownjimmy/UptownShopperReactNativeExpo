@@ -1,20 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActionSheetIOS, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Button, CheckBox, Icon, Input } from 'react-native-elements';
 
-import { createItem } from '../../slices/items';
+import { Item } from '../../interfaces';
+import { changeItem, createItem } from '../../slices/items';
 
 const types = ['cancel', 'grocery', 'hardware', 'clothing', 'other'];
 
-export function ItemModal({ navigation }: {navigation: any}) {
+export function ItemModal({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) {
+  const { item } = route.params;
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
   const [note, setNote] = useState('');
   const [type, setType] = useState('grocery');
   const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    if (item) {
+      setName(item.name);
+      setNote(item.note);
+      setType(item.type);
+      setActive(item.active);
+    }
+  }, []);
 
   const openActionSheet = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -30,6 +47,11 @@ export function ItemModal({ navigation }: {navigation: any}) {
 
   const createNewItem = async () => {
     await dispatch(createItem(name, note, type, active));
+    navigation.goBack();
+  };
+
+  const updateExistingItem = async () => { 
+    await dispatch(changeItem(item.id, name, note, type, active));
     navigation.goBack();
   };
 
@@ -82,7 +104,11 @@ export function ItemModal({ navigation }: {navigation: any}) {
           marginHorizontal: 40,
         }}
         onPress={() => {
-          createNewItem();
+          if (!item) {
+            createNewItem();
+          } else {
+            updateExistingItem();
+          }
         }}
         title='Finish'
         disabled={name.length < 3}

@@ -56,6 +56,19 @@ const itemsSlice = createSlice({
       state.loading = false;
       state.hasErrors = true;
     },
+    updateItem: (state) => {
+      state.loading = true;
+    },
+    updateItemSuccess: (state, { payload }) => {
+      const index = state.items.findIndex((item) => item.id === payload.id);
+      state.items[index] = payload;
+      state.loading = false;
+      state.hasErrors = false;
+    },
+    updateItemFailure: (state) => {
+      state.loading = false;
+      state.hasErrors = true;
+    },
   },
 });
 
@@ -70,6 +83,9 @@ export const {
   deleteItem,
   deleteItemSuccess,
   deleteItemFailure,
+  updateItem,
+  updateItemSuccess,
+  updateItemFailure,
 } = itemsSlice.actions;
 
 // A selector
@@ -138,6 +154,35 @@ export function removeItem(itemId: number) {
         });
     } catch {
       dispatch(deleteItemFailure);
+    }
+  };
+}
+
+export function changeItem(
+  id: number,
+  name: string,
+  note: string,
+  type: string,
+  active: boolean
+) {
+  return async (dispatch: Dispatch) => {
+    try {
+      await axiosInstance
+        .put(`/items/${id}`, {
+          id: id,
+          name: name,
+          note: note,
+          type: type,
+          active: active,
+        })
+        .then((response) => {
+          dispatch(updateItemSuccess({ id, name, note, type, active }));
+        })
+        .catch((error) => {
+          dispatch(updateItemFailure);
+        });
+    } catch {
+      dispatch(updateItemFailure);
     }
   };
 }

@@ -20,6 +20,10 @@ export function PantryItem({
     await dispatch(removeItem(item.id));
   };
 
+  const editItem = () => {
+    navigation.navigate('CreateItemModal', {item});
+  }
+
   const confirmDelete = () =>
     Alert.alert(
       'Delete Item',
@@ -36,6 +40,14 @@ export function PantryItem({
     );
 
   const swipeButtons = [
+    {
+      text: 'Edit',
+      backgroundColor: 'blue',
+      color: '#ffffff',
+      onPress: () => {
+        editItem();
+      }
+    },
     {
       text: 'Delete',
       backgroundColor: 'red',
