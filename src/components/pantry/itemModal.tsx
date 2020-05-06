@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Button, CheckBox, Icon, Input } from 'react-native-elements';
 
-import { Item } from '../../interfaces';
 import { changeItem, createItem } from '../../slices/items';
 
 const types = ['cancel', 'grocery', 'hardware', 'clothing', 'other'];
@@ -16,7 +15,7 @@ export function ItemModal({
   route: any;
   navigation: any;
 }) {
-  const { item } = route.params;
+  const { item } = route?.params;
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');

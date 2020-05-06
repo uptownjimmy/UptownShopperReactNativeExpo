@@ -30,7 +30,7 @@ export function PantryNavigation() {
           headerTitle: 'Pantry',
           headerRight: () => (
             <AddItemButton
-              onPress={() => navigation.navigate('CreateItemModal')}
+              onPress={() => navigation.navigate('CreateItemModal', {})}
             >
               <Image source={require('../../assets/green-plus-24-24.png')} />
             </AddItemButton>
