@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Text, SafeAreaView } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  Text,
+  SafeAreaView,
+  View,
+} from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -19,7 +25,7 @@ export function PantryPage({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   useEffect(() => {
-      setFilteredItems(items);
+    setFilteredItems(items);
   }, [items]);
 
   const updateSearch = (searchParams: string) => {
@@ -27,7 +33,9 @@ export function PantryPage({ navigation }: { navigation: any }) {
 
     if (searchParams) {
       setFilteredItems(
-        items.filter((item: Item) => item.name.toLowerCase().includes(searchParams.toLowerCase()))
+        items.filter((item: Item) =>
+          item.name.toLowerCase().includes(searchParams.toLowerCase())
+        )
       );
     } else {
       setFilteredItems(items);
@@ -35,7 +43,12 @@ export function PantryPage({ navigation }: { navigation: any }) {
   };
 
   const renderItems = () => {
-    if (loading) return <Text>Loading items...</Text>;
+    if (loading)
+      return (
+        <SpinnerView>
+          <ActivityIndicator size='large' color='gray' />
+        </SpinnerView>
+      );
     if (hasErrors) return <Text>Unable to display items.</Text>;
 
     return (
@@ -63,4 +76,11 @@ export function PantryPage({ navigation }: { navigation: any }) {
 const PantrySafeAreaView = styled(SafeAreaView)`
   flex: 1;
   background-color: #fff;
+`;
+
+const SpinnerView = styled(View)`
+    flex: 1;
+    justify-content: center;
+    flex-direction: row;
+    padding: 10px;
 `;

@@ -6,7 +6,7 @@ import { Button, CheckBox, Icon, Input } from 'react-native-elements';
 
 import { changeItem, createItem } from '../../slices/items';
 
-const types = ['cancel', 'grocery', 'hardware', 'clothing', 'other'];
+const types = ['cancel', 'grocery', 'hardware', 'clothing', 'to do', 'other'];
 
 export function ItemModal({
   route,
@@ -57,20 +57,33 @@ export function ItemModal({
   return (
     <ItemModalView>
       <Input
-        placeholder='name'
+        label='name'
+        labelStyle={{
+          color: 'gray',
+          fontWeight: '100',
+        }}
         autoCapitalize='none'
         containerStyle={{ paddingTop: 30 }}
         onChangeText={(value) => setName(value)}
         value={name}
       />
       <Input
-        placeholder='note'
+        label='note'
+        labelStyle={{
+          color: 'gray',
+          fontWeight: '100',
+        }}
         autoCapitalize='none'
         containerStyle={{ paddingTop: 30 }}
         onChangeText={(value) => setNote(value)}
         value={note}
       />
       <Input
+        label='type'
+        labelStyle={{
+          color: 'gray',
+          fontWeight: '100',
+        }}
         defaultValue={type}
         containerStyle={{ paddingTop: 30 }}
         rightIcon={

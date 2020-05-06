@@ -24,7 +24,9 @@ const itemsSlice = createSlice({
       state.loading = true;
     },
     getItemsSuccess: (state, { payload }) => {
-      state.items = payload;
+      state.items = payload.sort((a, b) => {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      });
       state.loading = false;
       state.hasErrors = false;
     },
@@ -36,7 +38,9 @@ const itemsSlice = createSlice({
       state.loading = true;
     },
     addItemSuccess: (state, { payload }) => {
-      state.items = [...state.items, payload];
+      state.items = [...state.items, payload].sort((a, b) => {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      });
       state.loading = false;
       state.hasErrors = false;
     },
@@ -48,7 +52,11 @@ const itemsSlice = createSlice({
       state.loading = true;
     },
     deleteItemSuccess: (state, { payload }) => {
-      state.items = state.items.filter((item) => item.id !== payload);
+      state.items = state.items
+        .filter((item) => item.id !== payload)
+        .sort((a, b) => {
+          return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        });
       state.loading = false;
       state.hasErrors = false;
     },
