@@ -4,8 +4,8 @@ import { Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 
-import { removeItem } from '../../slices/items';
-import { Item } from '../../interfaces';
+import { removeItem } from '../../data/api/itemApi';
+import { Item } from '../../utility/interfaces';
 
 export function PantryItem({
   item,

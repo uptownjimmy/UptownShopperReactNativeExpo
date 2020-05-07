@@ -1,0 +1,1 @@
+export const types = ['cancel', 'grocery', 'hardware', 'clothing', 'to do', 'other'];

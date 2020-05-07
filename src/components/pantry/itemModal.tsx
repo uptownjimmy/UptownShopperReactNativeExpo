@@ -4,9 +4,8 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Button, CheckBox, Icon, Input } from 'react-native-elements';
 
-import { changeItem, createItem } from '../../slices/items';
-
-const types = ['cancel', 'grocery', 'hardware', 'clothing', 'to do', 'other'];
+import { changeItem, createItem } from '../../data/api/itemApi';
+import { types } from './../../utility/configs';
 
 export function ItemModal({
   route,

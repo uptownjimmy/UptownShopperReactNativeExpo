@@ -11,8 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { PantryItem } from './pantryItem';
-import { fetchItems, itemsSelector } from '../../slices/items';
-import { Item } from '../../interfaces';
+import { itemsSelector } from '../../data/slices/itemSlice';
+import { fetchItems } from '../../data/api/itemApi';
+import { Item } from '../../utility/interfaces';
 
 export function PantryPage({ navigation }: { navigation: any }) {
   const [searchParams, setSearchParams] = useState('');

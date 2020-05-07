@@ -9,7 +9,7 @@ import { PantryNavigation } from './src/navigation/pantryNavigation';
 import { StoreNavigation } from './src/navigation/storeNavigation';
 const Drawer = createDrawerNavigator();
 
-import rootReducer from './src/slices';
+import rootReducer from './src/data/slices';
 const store = configureStore({ reducer: rootReducer });
 
 export default function App() {

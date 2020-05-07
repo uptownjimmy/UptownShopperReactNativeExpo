@@ -11,15 +11,15 @@ const PantryNavigator = createStackNavigator();
 export function PantryNavigation() {
   return (
     <PantryNavigator.Navigator
-      initialRouteName="Pantry"
-      headerMode="screen"
+      initialRouteName='Pantry'
+      headerMode='screen'
       screenOptions={{
         headerTintColor: 'black',
         headerStyle: { backgroundColor: 'white' },
       }}
     >
       <PantryNavigator.Screen
-        name="PantryPage"
+        name='PantryPage'
         component={PantryPage}
         options={({ navigation }) => ({
           headerLeft: () => (
@@ -38,7 +38,7 @@ export function PantryNavigation() {
         })}
       />
       <PantryNavigator.Screen
-        name="CreateItemModal"
+        name='CreateItemModal'
         component={ItemModal}
         options={() => ({
           headerTitle: 'Create Item',
