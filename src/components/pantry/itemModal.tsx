@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Button, CheckBox, Icon, Input } from 'react-native-elements';
 
 import { changeItem, createItem } from '../../data/api/itemApi';
-import { types } from './../../utility/configs';
+import { types } from '../../utility/configs';
 
 export function ItemModal({
   route,

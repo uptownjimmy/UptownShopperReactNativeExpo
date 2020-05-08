@@ -16,7 +16,7 @@ const itemSlice = createSlice({
     getItems: (state) => {
       state.loading = true;
     },
-    getItemsSuccess: (state, { payload }) => {
+    getItemsSuccess: (state, { payload }: { payload: Item[] }) => {
       state.items = payload.sort((a: Item, b: Item) => {
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       });
@@ -30,7 +30,7 @@ const itemSlice = createSlice({
     addItem: (state) => {
       state.loading = true;
     },
-    addItemSuccess: (state, { payload }) => {
+    addItemSuccess: (state, { payload }: { payload: Item }) => {
       state.items = [...state.items, payload].sort((a: Item, b: Item) => {
         return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
       });
@@ -44,7 +44,7 @@ const itemSlice = createSlice({
     deleteItem: (state) => {
       state.loading = true;
     },
-    deleteItemSuccess: (state, { payload }) => {
+    deleteItemSuccess: (state, { payload }: { payload: number }) => {
       state.items = state.items
         .filter((item) => item.id !== payload)
         .sort((a, b) => {
@@ -60,7 +60,7 @@ const itemSlice = createSlice({
     updateItem: (state) => {
       state.loading = true;
     },
-    updateItemSuccess: (state, { payload }) => {
+    updateItemSuccess: (state, { payload }: { payload: Item }) => {
       const index = state.items.findIndex((item) => item.id === payload.id);
       state.items[index] = payload;
       state.loading = false;
