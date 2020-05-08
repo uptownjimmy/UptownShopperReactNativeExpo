@@ -8,7 +8,7 @@ import { ItemModal } from '../components/pantry/itemModal';
 
 const PantryNavigator = createStackNavigator();
 
-export function PantryNavigation() {
+export const PantryNavigation = () => {
   return (
     <PantryNavigator.Navigator
       initialRouteName='Pantry'

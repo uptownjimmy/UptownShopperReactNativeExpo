@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  SafeAreaView,
-  View,
-} from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 
-import { PantryItem } from './pantryItem';
 import { itemsSelector } from '../../data/slices/itemSlice';
 import { fetchItems } from '../../data/api/itemApi';
-import { Item } from '../../utility/interfaces';
+import { Spinner } from '../common/spinner';
+import { ErrorNotification } from '../common/errorNotification';
+import { PageSafeAreaView } from '../common/pageSafeAreaView';
+import { PantryList } from './pantryList';
 
-export function PantryPage({ navigation }: { navigation: any }) {
-  const [searchParams, setSearchParams] = useState('');
-  const [filteredItems, setFilteredItems] = useState();
+export const PantryPage = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch();
   const { items, loading, hasErrors } = useSelector(itemsSelector);
 
@@ -25,63 +16,14 @@ export function PantryPage({ navigation }: { navigation: any }) {
     dispatch(fetchItems());
   }, [dispatch]);
 
-  useEffect(() => {
-    setFilteredItems(items);
-  }, [items]);
-
-  const updateSearch = (searchParams: string) => {
-    setSearchParams(searchParams);
-
-    if (searchParams) {
-      setFilteredItems(
-        items.filter((item: Item) =>
-          item.name.toLowerCase().includes(searchParams.toLowerCase())
-        )
-      );
-    } else {
-      setFilteredItems(items);
-    }
-  };
-
   const renderItems = () => {
-    if (loading)
+    if (loading) return <Spinner />;
+    if (hasErrors)
       return (
-        <SpinnerView>
-          <ActivityIndicator size='large' color='gray' />
-        </SpinnerView>
+        <ErrorNotification errorNotification={'Unable to display items.'} />
       );
-    if (hasErrors) return <Text>Unable to display items.</Text>;
-
-    return (
-      <>
-        <SearchBar
-          onChangeText={updateSearch}
-          value={searchParams}
-          platform='ios'
-          clearIcon={false}
-        />
-        <FlatList
-          data={filteredItems}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <PantryItem item={item} navigation={navigation} />
-          )}
-        />
-      </>
-    );
+    return <PantryList items={items} navigation={navigation} />;
   };
 
-  return <PantrySafeAreaView>{renderItems()}</PantrySafeAreaView>;
-}
-
-const PantrySafeAreaView = styled(SafeAreaView)`
-  flex: 1;
-  background-color: #fff;
-`;
-
-const SpinnerView = styled(View)`
-    flex: 1;
-    justify-content: center;
-    flex-direction: row;
-    padding: 10px;
-`;
+  return <PageSafeAreaView>{renderItems()}</PageSafeAreaView>;
+};

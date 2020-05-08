@@ -7,7 +7,7 @@ import { ShoppingPage } from '../components/shopping/shoppingPage';
 
 const ShoppingNavigator = createStackNavigator();
 
-export function ShoppingNavigation() {
+export const ShoppingNavigation = () => {
   return (
     <ShoppingNavigator.Navigator
       initialRouteName='Shopping'
@@ -41,7 +41,6 @@ export function ShoppingNavigation() {
     </ShoppingNavigator.Navigator>
   );
 }
-
 
 const MenuButton = styled(TouchableOpacity)`
   margin-left: 20px;

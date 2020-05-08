@@ -1,17 +1,13 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { Text } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { PageSafeAreaView } from '../common/pageSafeAreaView';
 
-export function ShoppingPage() {
+export const ShoppingPage = ({ navigation }: { navigation: any }) => {
   return (
-      <ShoppingView>
-        <Text>Put yo shopping items here, yo.</Text>
-      </ShoppingView>
+    <PageSafeAreaView>
+      <Text>Put yo shopping items here, yo.</Text>
+    </PageSafeAreaView>
   );
-}
-
-const ShoppingView = styled(View)`
-  flex:1;
-  align-items: center;
-  justify-content: center;
-`;
+};

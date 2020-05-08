@@ -7,13 +7,13 @@ import Swipeout from 'react-native-swipeout';
 import { removeItem } from '../../data/api/itemApi';
 import { Item } from '../../utility/interfaces';
 
-export function PantryItem({
+export const PantryItem = ({
   item,
   navigation,
 }: {
   item: Item;
   navigation: any;
-}) {
+}) => {
   const dispatch = useDispatch();
 
   const deleteItem = async () => {
@@ -21,8 +21,8 @@ export function PantryItem({
   };
 
   const editItem = () => {
-    navigation.navigate('CreateItemModal', {item});
-  }
+    navigation.navigate('CreateItemModal', { item });
+  };
 
   const confirmDelete = () =>
     Alert.alert(
@@ -46,7 +46,7 @@ export function PantryItem({
       color: '#ffffff',
       onPress: () => {
         editItem();
-      }
+      },
     },
     {
       text: 'Delete',
@@ -73,4 +73,4 @@ export function PantryItem({
       />
     </Swipeout>
   );
-}
+};

@@ -50,10 +50,10 @@ export const createItem = (
 
     await axiosInstance
       .post('/items', {
-        name: name,
-        note: note,
-        type: type,
-        active: active,
+        name,
+        note,
+        type,
+        active,
       })
       .then((response) => {
         const id = response.data;

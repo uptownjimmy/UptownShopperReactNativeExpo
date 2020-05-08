@@ -7,7 +7,7 @@ import { StorePage } from '../components/store/storePage';
 
 const StoreNavigator = createStackNavigator();
 
-export function StoreNavigation() {
+export const StoreNavigation = () => {
   return (
     <StoreNavigator.Navigator
       initialRouteName='Store'
