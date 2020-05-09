@@ -14,6 +14,7 @@ import {
   updateItem,
   updateItemSuccess,
   updateItemFailure,
+  getActiveItems,
 } from '../slices/itemSlice';
 
 const axiosInstance = axios.create({
@@ -108,3 +109,9 @@ export const changeItem = (
       });
   };
 }
+
+// export const fetchActiveItems = () => {
+//   return (dispatch: Dispatch) => {
+//     dispatch(getActiveItems);
+//   };
+// }

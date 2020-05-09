@@ -46,7 +46,7 @@ export const PantryNavigation = () => {
       />
     </PantryNavigator.Navigator>
   );
-}
+};
 
 const MenuButton = styled(TouchableOpacity)`
   margin-left: 20px;

@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 
-import { removeItem } from '../../data/api/itemApi';
+import { removeItem } from '../../data/api/itemAsyncActions';
 import { Item } from '../../utility/interfaces';
 
 export const PantryItem = ({

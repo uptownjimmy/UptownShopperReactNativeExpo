@@ -70,6 +70,9 @@ const itemSlice = createSlice({
       state.loading = false;
       state.hasErrors = true;
     },
+    getActiveItems: (state) => {
+      state.items = state.items.filter(item => item.active === true);
+    }
   },
 });
 
@@ -87,6 +90,7 @@ export const {
   updateItem,
   updateItemSuccess,
   updateItemFailure,
+  getActiveItems,
 } = itemSlice.actions;
 
 // selector
