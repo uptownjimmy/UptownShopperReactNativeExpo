@@ -1,19 +1,25 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import { itemsSelector } from '../../data/slices/itemSlice';
-import { fetchItems } from '../../data/api/itemAsyncActions';
 import { Spinner } from '../common/spinner';
 import { ErrorNotification } from '../common/errorNotification';
 import { PageSafeAreaView } from '../common/pageSafeAreaView';
+import { PantryList } from '../pantry/pantryList';
 
 export const ShoppingPage = ({ navigation }: { navigation: any }) => {
-  const dispatch = useDispatch();
   const { activeItems, loading, hasErrors } = useSelector(itemsSelector);
 
-  // useEffect(() => {
-  //   dispatch(fetchActiveItems());
-  // }, [dispatch]);
+  const renderItems = () => {
+    if (loading) return <Spinner />;
+    if (hasErrors)
+      return (
+        <ErrorNotification
+          errorNotification={'Unable to display shopping list.'}
+        />
+      );
+    return <PantryList items={activeItems} navigation={navigation} />;
+  };
 
-  return <PageSafeAreaView></PageSafeAreaView>;
+  return <PageSafeAreaView>{renderItems()}</PageSafeAreaView>;
 };

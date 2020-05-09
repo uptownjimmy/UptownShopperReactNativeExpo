@@ -6,9 +6,24 @@ export const initialState = {
   loading: false,
   hasErrors: false,
   items: [] as Item[],
+  activeItems: [] as Item[],
 };
 
-// A slice for items with our three reducers
+const sortItems = (itemsToSort: Item[]) => {
+  return itemsToSort.sort((a: Item, b: Item) => {
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+  });
+};
+
+const filterActive = (itemsToFilter: Item[]) => {
+  return itemsToFilter.filter((item) => item.active === true);
+};
+
+const findIndex = (itemsToUpdate: Item[], updatedItem: Item) => {
+  return itemsToUpdate.findIndex((item) => item.id === updatedItem.id)
+};
+
+// A slice for items with reducers
 const itemSlice = createSlice({
   name: 'items',
   initialState,
@@ -17,9 +32,9 @@ const itemSlice = createSlice({
       state.loading = true;
     },
     getItemsSuccess: (state, { payload }: { payload: Item[] }) => {
-      state.items = payload.sort((a: Item, b: Item) => {
-        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-      });
+      const sortedArray = sortItems(payload);
+      state.items = sortedArray;
+      state.activeItems = filterActive(sortedArray);
       state.loading = false;
       state.hasErrors = false;
     },
@@ -31,9 +46,9 @@ const itemSlice = createSlice({
       state.loading = true;
     },
     addItemSuccess: (state, { payload }: { payload: Item }) => {
-      state.items = [...state.items, payload].sort((a: Item, b: Item) => {
-        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-      });
+      const sortedArray = sortItems([...state.items, payload]);
+      state.items = sortedArray;
+      state.activeItems = filterActive(sortedArray);
       state.loading = false;
       state.hasErrors = false;
     },
@@ -45,11 +60,10 @@ const itemSlice = createSlice({
       state.loading = true;
     },
     deleteItemSuccess: (state, { payload }: { payload: number }) => {
-      state.items = state.items
-        .filter((item) => item.id !== payload)
-        .sort((a, b) => {
-          return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
-        });
+      const newArray = state.items.filter((item) => item.id !== payload);
+      const sortedArray = sortItems(newArray);
+      state.items = sortedArray;
+      state.activeItems = filterActive(sortedArray);
       state.loading = false;
       state.hasErrors = false;
     },
@@ -61,8 +75,10 @@ const itemSlice = createSlice({
       state.loading = true;
     },
     updateItemSuccess: (state, { payload }: { payload: Item }) => {
-      const index = state.items.findIndex((item) => item.id === payload.id);
-      state.items[index] = payload;
+      const itemsIndex = findIndex(state.items, payload);
+      const activeItemsIndex = findIndex(state.activeItems, payload);
+      state.items[itemsIndex] = payload;
+      state.activeItems[activeItemsIndex] = payload;
       state.loading = false;
       state.hasErrors = false;
     },
@@ -70,9 +86,6 @@ const itemSlice = createSlice({
       state.loading = false;
       state.hasErrors = true;
     },
-    getActiveItems: (state) => {
-      state.items = state.items.filter(item => item.active === true);
-    }
   },
 });
 
@@ -90,7 +103,6 @@ export const {
   updateItem,
   updateItemSuccess,
   updateItemFailure,
-  getActiveItems,
 } = itemSlice.actions;
 
 // selector

@@ -14,7 +14,9 @@ export const PantryPage = ({ navigation }: { navigation: any }) => {
     if (loading) return <Spinner />;
     if (hasErrors)
       return (
-        <ErrorNotification errorNotification={'Unable to display items.'} />
+        <ErrorNotification
+          errorNotification={'Unable to display pantry list.'}
+        />
       );
     return <PantryList items={items} navigation={navigation} />;
   };
